@@ -51,13 +51,13 @@ function aws_configure() {
   aws configure
 }
 
-function aws_list {
+function aws_list() {
   if [ -z "$1" ]; then
     echo "Usage: 'awscm list config', 'aws list credentials'"
   else
     if [[ "$1" == "config" ]]; then
       cat ~/.aws/config
-    elif [[ "$1" == "credentials" ]]; then
+    elif [[ "$1" == "credentials" ]] || [[ "$1" == "creds" ]]; then
       cat ~/.aws/credentials
     else
       echo "Usage: 'awscm list config', 'aws list credentials'"
