@@ -1,6 +1,12 @@
 #!/bin/bash
 #
-# AWSCM: Command line tool for quickly switching between AWS profiles. 
+# AWSCM: Command line tool for quickly switching between AWS profiles.
+
+OUTPUT_FORMATS=(
+  text
+  json
+  table
+)
 
 REGIONS=(
   ap-northeast-1
@@ -14,43 +20,67 @@ REGIONS=(
   us-west-2
 )
 
-OUTPUT_FORMATS=(
-  text
-  json
-  table
-)
-
 function awscm() {
-if [ -z "$1" ]
-then
-  echo "No command supplied. Use 'awscm use', 'awscm region', 'awscm output'"
-  return 0
-fi
+  if [ -z "$1" ]; then
+    echo "No command supplied. Use 'awscm use', 'awscm region', 'awscm output'"
+    return 0
+  fi
 
-case $1 in
-  "use")
-    aws_use "$2"
-    ;;
-  "region")
-    aws_region "$2"
-    ;;
-  "output")
-    aws_output "$2"
-    ;;
-  * )
-    echo "Unknown command"
-    ;;
-esac
+  case "$1" in
+    "add") aws_add "$2" ;;
+    "configure") aws_configure ;;
+    "list") aws_list "$2" ;;
+    "output") aws_output "$2" ;;
+    "region") aws_region "$2" ;;
+    "use") aws_use "$2" ;;
+    *) echo "Unknown command" ;;
+  esac
 }
 
-function aws_use() {
+function aws_add() {
 
-if [ -z "$1" ]; then
-  echo "No environment supplied"
-else
-  export AWS_DEFAULT_PROFILE=${1}
-  echo "AWS command line environment set to [${1}]"
-fi
+  if [ -z "$1" ]; then
+    echo "No profile name supplied."
+  else
+    echo "Creating the AWS profile [${1}]:"
+    aws configure --profile "${1}"
+  fi
+}
+
+function aws_configure() {
+  aws configure
+}
+
+function aws_list {
+  if [ -z "$1" ]; then
+    echo "Usage: 'awscm list config', 'aws list credentials'"
+  else
+    if [[ "$1" == "config" ]]; then
+      cat ~/.aws/config
+    elif [[ "$1" == "credentials" ]]; then
+      cat ~/.aws/credentials
+    else
+      echo "Usage: 'awscm list config', 'aws list credentials'"
+    fi
+  fi
+}
+
+function aws_output() {
+
+  if [ -z "$1" ]; then
+    echo "No output format supplied"
+  else
+    if is_output_format_valid "$1"; then
+      export AWS_DEFAULT_OUTPUT=${1}
+      echo "AWS command line output format set to '${1}'"
+    else
+      echo "The output format supplied, '${1}', is not supported."
+      echo "Please use an output format from:"
+      for output_format in "${OUTPUT_FORMATS[@]}"; do
+        echo -e "\t $output_format"
+      done
+    fi
+  fi
 }
 
 function aws_region() {
@@ -71,32 +101,14 @@ function aws_region() {
   fi
 }
 
-function aws_output() {
+function aws_use() {
 
-if [ -z "$1" ]; then
-  echo "No output format supplied"
-else
-  if is_output_format_valid "$1"; then
-    export AWS_DEFAULT_OUTPUT=${1}
-    echo "AWS command line output format set to '${1}'"
+  if [ -z "$1" ]; then
+    echo "No environment supplied"
   else
-    echo "The output format supplied, '${1}', is not supported."
-    echo "Please use an output format from:"
-    for output_format in "${OUTPUT_FORMATS[@]}"; do
-      echo -e "\t $output_format"
-    done
+    export AWS_DEFAULT_PROFILE=${1}
+    echo "AWS command line environment set to [${1}]"
   fi
-fi
-}
-
-function is_region_valid() {
-
-  for region in "${REGIONS[@]}"; do
-    if [[ $region == "$1" ]]; then
-      return 0
-    fi
-  done
-  return 1
 }
 
 function is_output_format_valid() {
@@ -107,4 +119,15 @@ function is_output_format_valid() {
       fi
     done
     return 1
+}
+
+
+function is_region_valid() {
+
+  for region in "${REGIONS[@]}"; do
+    if [[ $region == "$1" ]]; then
+      return 0
+    fi
+  done
+  return 1
 }
