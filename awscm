@@ -1,0 +1,110 @@
+#!/bin/bash
+#
+# AWSCM: Command line tool for quickly switching between AWS profiles. 
+
+REGIONS=(
+  ap-northeast-1
+  ap-southeast-1
+  ap-southeast-2
+  eu-central-1
+  eu-west-1
+  sa-east-1
+  us-east-1
+  us-west-1
+  us-west-2
+)
+
+OUTPUT_FORMATS=(
+  text
+  json
+  table
+)
+
+function awscm() {
+if [ -z "$1" ]
+then
+  echo "No command supplied. Use 'awscm use', 'awscm region', 'awscm output'"
+  return 0
+fi
+
+case $1 in
+  "use")
+    aws_use "$2"
+    ;;
+  "region")
+    aws_region "$2"
+    ;;
+  "output")
+    aws_output "$2"
+    ;;
+  * )
+    echo "Unknown command"
+    ;;
+esac
+}
+
+function aws_use() {
+
+if [ -z "$1" ]; then
+  echo "No environment supplied"
+else
+  export AWS_DEFAULT_PROFILE=${1}
+  echo "AWS command line environment set to [${1}]"
+fi
+}
+
+function aws_region() {
+
+  if [[ -z "$1" ]]; then
+    echo "No region supplied"
+  else
+    if is_region_valid "$1"; then
+      export AWS_DEFAULT_REGION=${1}
+      echo "AWS command line region set to '${1}'"
+    else
+      echo "The region supplied, '${1}', is not recognised."
+      echo "Please use a region from:"
+      for region in "${REGIONS[@]}"; do
+        echo -e "\t $region"
+      done
+    fi
+  fi
+}
+
+function aws_output() {
+
+if [ -z "$1" ]; then
+  echo "No output format supplied"
+else
+  if is_output_format_valid "$1"; then
+    export AWS_DEFAULT_OUTPUT=${1}
+    echo "AWS command line output format set to '${1}'"
+  else
+    echo "The output format supplied, '${1}', is not supported."
+    echo "Please use an output format from:"
+    for output_format in "${OUTPUT_FORMATS[@]}"; do
+      echo -e "\t $output_format"
+    done
+  fi
+fi
+}
+
+function is_region_valid() {
+
+  for region in "${REGIONS[@]}"; do
+    if [[ $region == "$1" ]]; then
+      return 0
+    fi
+  done
+  return 1
+}
+
+function is_output_format_valid() {
+
+    for output_format in "${OUTPUT_FORMATS[@]}"; do
+      if [[ $output_format == "$1" ]]; then
+        return 0
+      fi
+    done
+    return 1
+}
