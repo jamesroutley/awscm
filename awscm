@@ -22,7 +22,14 @@ REGIONS=(
 
 function awscm() {
   if [ -z "$1" ]; then
-    echo "No command supplied. Use 'awscm use', 'awscm region', 'awscm output'"
+    echo "No command supplied. Use:"
+    echo "'awscm add'"
+    echo "'awscm configure'"
+    echo "'awscm list'"
+    echo "'awscm output'"
+    echo "'awscm region'"
+    echo "'awscm use'"
+
     return 0
   fi
 
