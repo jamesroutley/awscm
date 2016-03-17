@@ -19,7 +19,10 @@ Print out `~/.aws/config` or `~/.aws/credentials` to STDOUT.
 Set the default output format.
 
     $ awscm region <aws-region>
-Set the default AWS region. See  <http://docs.aws.amazon.com/general/latest/gr/rande.html#cfn_region> for information on the AWS regions in which CloudFormation is available. 
+Set the default AWS region. See  <http://docs.aws.amazon.com/general/latest/gr/rande.html#cfn_region> for information on the AWS regions in which CloudFormation is available.
+
+    $ awscm status
+Display the currently set profile, region and output format.
 
     $ awscm use <profile>
 

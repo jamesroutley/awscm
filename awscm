@@ -28,6 +28,7 @@ function awscm() {
     echo "'awscm list'"
     echo "'awscm output'"
     echo "'awscm region'"
+    echo "'awscm status'"
     echo "'awscm use'"
 
     return 0
@@ -39,6 +40,7 @@ function awscm() {
     "list") aws_list "$2" ;;
     "output") aws_output "$2" ;;
     "region") aws_region "$2" ;;
+    "status") aws_status ;;
     "use") aws_use "$2" ;;
     *) echo "Unknown command" ;;
   esac
@@ -111,6 +113,26 @@ function aws_region() {
       done
     fi
   fi
+}
+
+function aws_status() {
+
+  if [ -z "$AWS_DEFAULT_PROFILE" ]; then
+    echo "AWS profile currently unset."
+  else
+    echo "AWS profile set to: [$AWS_DEFAULT_PROFILE]."
+  fi
+  if [ -z "$AWS_DEFAULT_REGION" ]; then
+    echo "AWS region currently unset, using profile default."
+  else
+    echo "AWS region set to: '$AWS_DEFAULT_REGION'."
+  fi
+  if [ -z "$AWS_DEFAULT_OUTPUT" ]; then
+    echo "AWS output format currently unset, using profile default."
+  else
+    echo "AWS output format set to: '$AWS_DEFAULT_OUTPUT'."
+  fi
+
 }
 
 function aws_use() {
