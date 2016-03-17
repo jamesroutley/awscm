@@ -42,12 +42,17 @@ function aws_add() {
   if [ -z "$1" ]; then
     echo "No profile name supplied."
   else
-    echo "Creating the AWS profile [${1}]:"
+    if cat ~/.aws/credentials | grep -q $1; then
+      echo "Updating the AWS profile [${1}]:"
+    else
+      echo "Creating the AWS profile [${1}]:"
+    fi
     aws configure --profile "${1}"
   fi
 }
 
 function aws_configure() {
+  echo "Configuring the default AWS profile:"
   aws configure
 }
 
@@ -106,8 +111,16 @@ function aws_use() {
   if [ -z "$1" ]; then
     echo "No environment supplied"
   else
-    export AWS_DEFAULT_PROFILE=${1}
-    echo "AWS command line environment set to [${1}]"
+    if cat ~/.aws/credentials | grep -q $1; then
+      export AWS_DEFAULT_PROFILE=${1}
+      echo "AWS command line environment set to [${1}]"
+    else
+      echo "AWS profile [${1}] not found."
+      echo "Please choose from an existing profile:"
+      cat ~/.aws/credentials | grep "\["
+      echo "Or create a new one with:"
+      echo "'awscm add ${1}'"
+    fi
   fi
 }
 
