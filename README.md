@@ -4,6 +4,17 @@ AWS Credentials Manager
 
 A command line tool for quickly switching between AWS profiles.
 
+## Install
+
+    $ git clone git://github.com/jamesroutley/awscm.git ~/.awscm
+    $ echo "source ~/.awscm/awscm.sh" >> ~/.bashrc
+
+Update with:
+
+    $ cd ~/.awscm
+    $ git pull
+    $ source ~/.bashrc
+
 ## Reference
 
     $ awscm add <profile-name>
