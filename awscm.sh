@@ -140,7 +140,7 @@ function aws_use() {
   if [ -z "$1" ]; then
     echo "No environment supplied"
   else
-    if grep -q "$1" ~/.aws/credentials; then
+    if grep -q "\[$1\]" ~/.aws/credentials; then
       export AWS_DEFAULT_PROFILE=${1}
       echo "AWS command line environment set to [${1}]"
     else
