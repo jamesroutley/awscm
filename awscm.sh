@@ -14,6 +14,7 @@ REGIONS=(
   ap-southeast-2
   eu-central-1
   eu-west-1
+  eu-west-2
   sa-east-1
   us-east-1
   us-west-1
@@ -29,6 +30,7 @@ function awscm() {
     echo "'awscm output'"
     echo "'awscm region'"
     echo "'awscm status'"
+    echo "'awscm export'"
     echo "'awscm use'"
 
     return 0
@@ -41,6 +43,7 @@ function awscm() {
     "output") aws_output "$2" ;;
     "region") aws_region "$2" ;;
     "status") aws_status ;;
+    "export") aws_export_variables ;;
     "use") aws_use "$2" ;;
     *) echo "Unknown command" ;;
   esac
@@ -172,4 +175,31 @@ function is_region_valid() {
     fi
   done
   return 1
+}
+
+function aws_export_variables() {
+
+  if [ -z "$1" ]; then
+    echo "No environment supplied"
+  else
+    if grep -q "\[$1\]" ~/.aws/credentials; then
+      export AWS_DEFAULT_PROFILE=${1}
+      export AWS_PROFILE=${1}
+      declare -a env_var_fields=("AWS_ACCESS_KEY_ID" "AWS_SECRET_ACCESS_KEY" "AWS_SESSION_TOKEN")
+      for var in "${env_var_fields[@]}"
+      do
+        lcvar=$(echo $var | tr '[:upper:]' '[:lower:]')
+        expval=$(aws configure get "${1}.$lcvar")
+        # echo "$var=$expval"
+        export $lcvar=$expval
+      done
+      echo "AWS command line variables exported for environment [${1}]"
+    else
+      echo "AWS profile [${1}] not found."
+      echo "Please choose from an existing profile:"
+      grep "\[" ~/.aws/credentials
+      echo "Or create a new one with:"
+      echo "'awscm add ${1}'"
+    fi
+  fi
 }
