@@ -191,7 +191,7 @@ function aws_export_variables() {
         lcvar=$(echo $var | tr '[:upper:]' '[:lower:]')
         expval=$(aws configure get "${1}.$lcvar")
         # echo "$var=$expval"
-        export $lcvar=$expval
+        export $var=$expval
       done
       echo "AWS command line variables exported for environment [${1}]"
     else
