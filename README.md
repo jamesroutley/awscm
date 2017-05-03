@@ -44,3 +44,11 @@ Update:
 - `$ awscm use <profile>`
 
   Set the default profile.
+
+- `$ awscm export <profile>`
+
+  Exports the AWS access key ID, secret key and session token (if present). Use for applications that are not compatible with DEFAULT_PROFILE.
+
+- `$ awscm assume <account id> <role name> <session name>`
+
+  Makes a call to `aws sts assume-role` using the role name and account ID that you specify, and then exports the credentials as environment variables.

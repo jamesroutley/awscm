@@ -29,6 +29,8 @@ function awscm() {
     echo "'awscm output'"
     echo "'awscm region'"
     echo "'awscm status'"
+    echo "'awscm export'"
+    echo "'awscm assume <account_id> <role_name> <session_name>'"
     echo "'awscm use'"
 
     return 0
@@ -41,6 +43,8 @@ function awscm() {
     "output") aws_output "$2" ;;
     "region") aws_region "$2" ;;
     "status") aws_status ;;
+    "export") aws_export_variables "$2" ;;
+    "assume") aws_assume_role "$2" "$3" "$4" ;;
     "use") aws_use "$2" ;;
     *) echo "Unknown command" ;;
   esac
@@ -142,6 +146,7 @@ function aws_use() {
   else
     if grep -q "\[$1\]" ~/.aws/credentials; then
       export AWS_DEFAULT_PROFILE=${1}
+      export AWS_PROFILE=${1}
       echo "AWS command line environment set to [${1}]"
     else
       echo "AWS profile [${1}] not found."
@@ -172,4 +177,50 @@ function is_region_valid() {
     fi
   done
   return 1
+}
+
+function aws_export_variables() {
+
+  if [ -z "$1" ]; then
+    echo "No environment supplied"
+  else
+    if grep -q "\[$1\]" ~/.aws/credentials; then
+      export AWS_DEFAULT_PROFILE=${1}
+      export AWS_PROFILE=${1}
+      declare -a env_var_fields=("AWS_ACCESS_KEY_ID" "AWS_SECRET_ACCESS_KEY" "AWS_SESSION_TOKEN")
+      for var in "${env_var_fields[@]}"
+      do
+        lcvar=$(echo $var | tr '[:upper:]' '[:lower:]')
+        expval=$(aws configure get "${1}.$lcvar")
+        # echo "$var=$expval"
+        export "$var=$expval"
+      done
+      echo "AWS command line variables exported for environment [${1}]"
+    else
+      echo "AWS profile [${1}] not found."
+      echo "Please choose from an existing profile:"
+      grep "\[" ~/.aws/credentials
+      echo "Or create a new one with:"
+      echo "'awscm add ${1}'"
+    fi
+  fi
+}
+
+function aws_assume_role() {
+
+  if [ -z "$1" ]; then
+    echo "No account ID provided"
+  else
+    response=$(aws sts assume-role --role-arn arn:aws:iam::${1}:role/${2} --role-session-name ${3})
+    if [ $? -eq 0 ]; then
+      ak=$(echo $response | jq -r ".Credentials.AccessKeyId")
+      export AWS_ACCESS_KEY_ID=$ak
+      sk=$(echo $response | jq -r ".Credentials.SecretAccessKey")
+      export AWS_SECRET_ACCESS_KEY=$sk
+      st=$(echo $response | jq -r ".Credentials.SessionToken")
+      export AWS_SESSION_TOKEN=$st
+    else
+      echo "Call to AWS STS failed. Message: $response"
+    fi
+  fi
 }
