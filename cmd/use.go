@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/jamesroutley/awscm-core/awscm"
+	"github.com/jamesroutley/awscm/core"
 	"github.com/spf13/cobra"
 	"os"
 	"strings"
@@ -15,7 +15,7 @@ func use(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 	profile := args[0]
-	profiles := awscm.Profiles()
+	profiles := core.Profiles()
 	if !stringInSlice(profile, profiles) {
 		msg := fmt.Sprintf(
 			"'%s' is invalid. Specify a valid AWS profile:\n%s\n", profile,

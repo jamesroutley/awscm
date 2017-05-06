@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/jamesroutley/awscm-core/awscm"
+	"github.com/jamesroutley/awscm/core"
 	"github.com/spf13/cobra"
 	"os"
 	"strings"
@@ -15,7 +15,7 @@ func region(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 	region := args[0]
-	regions := awscm.Regions
+	regions := core.Regions
 	if !stringInSlice(region, regions) {
 		msg := fmt.Sprintf(
 			"'%s' is invalid. Specify a valid AWS region:\n%s\n", region,

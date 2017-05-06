@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/jamesroutley/awscm-core/awscm"
+	"github.com/jamesroutley/awscm/core"
 	"github.com/spf13/cobra"
 	"os"
 	"strings"
@@ -15,7 +15,7 @@ func output(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 	output := args[0]
-	outputs := awscm.Outputs
+	outputs := core.Outputs
 	if !stringInSlice(output, outputs) {
 		msg := fmt.Sprintf(
 			"'%s' is invalid. Specify a valid AWS output format:\n%s\n",

@@ -1,4 +1,4 @@
-package awscm
+package core
 
 import (
 	"reflect"
