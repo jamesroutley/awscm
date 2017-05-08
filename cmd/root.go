@@ -20,9 +20,9 @@ var RootCmd = &cobra.Command{
 
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "print installation instructions",
-	Long: `init prints out awscm's installation instructions.`,
-	Run: initialise,
+	Short: "Print installation instructions",
+	Long:  `init prints out awscm's installation instructions.`,
+	Run:   initialise,
 }
 
 // lsCmd represents the ls command, which lists available AWS profiles.
@@ -38,23 +38,23 @@ Available profiles are collected from the section headers of:
 
 var outputCmd = &cobra.Command{
 	Use:   "output [format]",
-	Short: "use switches to an AWS output format",
-	Long: `use switches to an AWS output format by setting the environment variable
+	Short: "Switch AWS output formats",
+	Long: `output switches to an AWS output format by setting the environment variable
 AWS_DEFAULT_OUTPUT.`,
 	Run: output,
 }
 
 var regionCmd = &cobra.Command{
 	Use:   "region",
-	Short: "use switches to an AWS region",
-	Long: `use switches to an AWS region by setting the environment variable
+	Short: "Switch AWS regions",
+	Long: `region switches to an AWS region by setting the environment variable
 AWS_REGION.`,
 	Run: region,
 }
 
 var useCmd = &cobra.Command{
 	Use:   "use",
-	Short: "use switches to an AWS profile",
+	Short: "Switch AWS profiles",
 	Long: `use switches to an AWS profile by setting the environment variable
 AWS_PROFILE.
 
@@ -77,13 +77,14 @@ func Execute() {
 
 func init() {
 	RootCmd.PersistentFlags().StringVarP(&cfgFile, "file", "f", "",
-		"Internally used flag; do not use")
+		"File to write shell commands to")
+	RootCmd.PersistentFlags().MarkHidden("file")
 	RootCmd.AddCommand(initCmd)
 	RootCmd.AddCommand(lsCmd)
 	RootCmd.AddCommand(outputCmd)
 	RootCmd.AddCommand(regionCmd)
 	RootCmd.AddCommand(useCmd)
-	// useCmd.Flags()./
+	// useCmd.Flags().
 }
 
 func write(file string, cmds []string) {
