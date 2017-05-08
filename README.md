@@ -6,7 +6,12 @@ A cli tool for switching AWS profiles.
 
 ## Install
 
-TODO
+Install with `go get` (requires `go >= 1.8`):
+
+```shell
+$ go get github.com/jamesroutley/awscm
+$ awscm init >> ~/.bashrc  # or ~/.zshrc
+```
 
 ## Example
 
