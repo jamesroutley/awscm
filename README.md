@@ -1,8 +1,6 @@
 # awscm
 
-AWS Credentials Manager
-
-A cli tool for switching AWS profiles.
+AWS Credentials Manager, a cli tool for switching AWS profiles.
 
 ## Install
 
