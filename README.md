@@ -4,6 +4,13 @@ AWS Credentials Manager, a cli tool for switching AWS profiles.
 
 ## Install
 
+Install with [brew](https://brew.sh/):
+
+```shell
+$ brew install jamesroutley/tap/awscm
+$ awscm init >> ~/.bashrc  # or ~/.zshrc
+```
+
 Install with `go get` (requires `go >= 1.8`):
 
 ```shell
