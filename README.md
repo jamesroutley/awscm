@@ -2,22 +2,6 @@
 
 AWS Credentials Manager, a cli tool for switching AWS profiles.
 
-## Install
-
-Install with [Homebrew](https://brew.sh/) (macOS only):
-
-```shell
-$ brew install jamesroutley/tap/awscm
-$ awscm init >> ~/.bashrc  # or ~/.zshrc
-```
-
-Install with `go get` (requires `go >= 1.8`):
-
-```shell
-$ go get github.com/jamesroutley/awscm
-$ awscm init >> ~/.bashrc  # or ~/.zshrc
-```
-
 ## Example
 
 Accidentally run `aws-cli` command in the incorrect account:
@@ -69,4 +53,20 @@ Flags:
   -h, --help          help for awscm
 
 Use "awscm [command] --help" for more information about a command.
+```
+
+## Install
+
+Install with [Homebrew](https://brew.sh/) (macOS only):
+
+```shell
+$ brew install jamesroutley/tap/awscm
+$ awscm init >> ~/.bashrc  # or ~/.zshrc
+```
+
+Install with `go get` (requires `go >= 1.8`):
+
+```shell
+$ go get github.com/jamesroutley/awscm
+$ awscm init >> ~/.bashrc  # or ~/.zshrc
 ```
