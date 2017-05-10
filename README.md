@@ -62,6 +62,7 @@ Available Commands:
   ls          List available AWS profiles
   output      use switches to an AWS output format
   region      use switches to an AWS region
+  status      Show current settings
   use         use switches to an AWS profile
 
 Flags:
@@ -69,8 +70,3 @@ Flags:
 
 Use "awscm [command] --help" for more information about a command.
 ```
-
-TODO:
-
-- [ ] Add `status` command
-- [ ] Add support for using a profile by exporting `AWS_SECRET_KEY` etc

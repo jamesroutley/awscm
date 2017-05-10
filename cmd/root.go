@@ -52,6 +52,13 @@ AWS_REGION.`,
 	Run: region,
 }
 
+var statusCmd = &cobra.Command{
+	Use: "status",
+	Short: "Show current settings",
+	Long: `status shows current AWS profile, region and output format`,
+	Run: status,
+}
+
 var useCmd = &cobra.Command{
 	Use:   "use",
 	Short: "Switch AWS profiles",
@@ -83,6 +90,7 @@ func init() {
 	RootCmd.AddCommand(lsCmd)
 	RootCmd.AddCommand(outputCmd)
 	RootCmd.AddCommand(regionCmd)
+	RootCmd.AddCommand(statusCmd)
 	RootCmd.AddCommand(useCmd)
 	// useCmd.Flags().
 }
