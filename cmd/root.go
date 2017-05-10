@@ -53,10 +53,10 @@ AWS_REGION.`,
 }
 
 var statusCmd = &cobra.Command{
-	Use: "status",
+	Use:   "status",
 	Short: "Show current settings",
-	Long: `status shows current AWS profile, region and output format`,
-	Run: status,
+	Long:  `status shows current AWS profile, region and output format`,
+	Run:   status,
 }
 
 var useCmd = &cobra.Command{

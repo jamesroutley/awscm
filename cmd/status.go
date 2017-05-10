@@ -10,8 +10,8 @@ import (
 func status(cmd *cobra.Command, args []string) {
 	items := []string{"Profile", "Region", "Output Format"}
 	values := map[string]string{
-		"Profile": os.Getenv("AWS_PROFILE"),
-		"Region": os.Getenv("AWS_DEFAULT_REGION"),
+		"Profile":       os.Getenv("AWS_PROFILE"),
+		"Region":        os.Getenv("AWS_DEFAULT_REGION"),
 		"Output Format": os.Getenv("AWS_DEFAULT_OUTPUT"),
 	}
 	for _, item := range items {
